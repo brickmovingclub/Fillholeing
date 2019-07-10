@@ -45,7 +45,7 @@ namespace ZR
 		float x = 0, y = 0, z = 0;
 		unsigned long num1, num2, num3, vertexSize;
 		int num = 0, temp;
-		
+
 		//	读取文件内容
 		ReadBuffer(fileDir, &buffer);
 		stringstream ss(buffer);
@@ -76,25 +76,36 @@ namespace ZR
 		//	读取所有的顶点
 		while (vertexNum--)
 		{
-			ss >> x >> y >> z ;
+			ss >> x >> y >> z;
 			//std::shared_ptr< CVertex> ptr = allPoints[0];
 		//	std::cout << ptr->GetX() << std::endl;
-			allPoints[num]->SetVertex(x,y,z,num);
+			allPoints[num]->SetVertex(x, y, z, num);
 			model.AddPoints(allPoints[num], num);
 			++num;
-		} 
-	//	std::cout << "x:" << x << "y:" << y << "z:" << z << std::endl;
+		}
+		//	std::cout << "x:" << x << "y:" << y << "z:" << z << std::endl;
 
-		//	读取所有的面片
+			//	读取所有的面片
 		num = 0;
 		while (facetNum--)
 		{
 			ss >> vertexSize >> num1 >> num2 >> num3;
 			std::shared_ptr<CFacet> oneFace(new CFacet);
 			oneFace->SetNumber(num++);
+			//	面片插入点
 			oneFace->InsertVertex(allPoints[num1]);
 			oneFace->InsertVertex(allPoints[num2]);
 			oneFace->InsertVertex(allPoints[num3]);
+			//点插入三角面片
+			allPoints[num1]->AddFaces(oneFace);
+			allPoints[num2]->AddFaces(oneFace);
+			allPoints[num3]->AddFaces(oneFace);
+
+			//	插入点与点之间的关系
+			//allPoints[num1]->AddNextVertex(allPoints[num2]);
+			//allPoints[num2]->AddNextVertex(allPoints[num3]);
+			//allPoints[num3]->AddNextVertex(allPoints[num1]);
+
 
 			model.AddFacet(oneFace);
 
@@ -133,20 +144,20 @@ namespace ZR
 			oneFace->SetNumber(facetNum++);
 			for (i = 0; i < 3; i++)
 			{
-			//	添加顶点
+				//	添加顶点
 				ss >> useless >> x >> y >> z;
 				std::shared_ptr<CVertex> vertex(new CVertex(x, y, z, 0));
 				model.AddPoints(vertex, oneFace);
 			}
 			//	添加三角面片
 			model.AddFacet(oneFace);
-			
+
 			getline(ss, useless);
 			getline(ss, useless);
 			getline(ss, useless);
 		} while (1);
 
-		free(buffer);				
+		free(buffer);
 
 		//	对所有顶点进行编号
 		model.SerialVertex();
@@ -187,7 +198,7 @@ namespace ZR
 	void CReader::TransformToStl(CModel &model, const fs::path &stlFileName)
 	{
 		std::shared_ptr< CVertex> ptrVertex1, ptrVertex2, ptrVertex3;
-		CVector vector1, vector2,mormalVector;									//	两个临时向量，用来计算法向量
+		CVector vector1, vector2, mormalVector;									//	两个临时向量，用来计算法向量
 		ofstream fout(stlFileName.c_str(), fstream::out);
 		fout.precision(std::numeric_limits<double>::digits10);
 		if (fout.is_open())
@@ -205,15 +216,15 @@ namespace ZR
 
 				fout << "facet normal " << mormalVector.GetX() << " " << mormalVector.GetY() << " " << mormalVector.GetZ() << endl;
 				fout << "outer loop" << endl;
-				fout << "vertex " << ptrVertex1->GetX()<<" "<< ptrVertex1->GetY() <<" "<< ptrVertex1->GetZ() << endl;
-				fout << "vertex " << ptrVertex2->GetX() <<" "<< ptrVertex2->GetY() << " "<<ptrVertex2->GetZ() << endl;
-				fout << "vertex " << ptrVertex3->GetX() <<" "<< ptrVertex3->GetY() <<" "<< ptrVertex3->GetZ() << endl;
+				fout << "vertex " << ptrVertex1->GetX() << " " << ptrVertex1->GetY() << " " << ptrVertex1->GetZ() << endl;
+				fout << "vertex " << ptrVertex2->GetX() << " " << ptrVertex2->GetY() << " " << ptrVertex2->GetZ() << endl;
+				fout << "vertex " << ptrVertex3->GetX() << " " << ptrVertex3->GetY() << " " << ptrVertex3->GetZ() << endl;
 
 				//fout << "vertex " << iter->GetVertex[1]->GetX() << iter->GetVertex[1]->GetY() << iter->GetVertex[1]->GetZ() << endl;
 				//fout << "vertex " << iter->GetVertex[2]->GetX() << iter->GetVertex[2]->GetY() << iter->GetVertex[2]->GetZ() << endl;
 				fout << "endloop" << endl;
 				fout << "endfacet" << endl;
-			}		
+			}
 			fout << "endsolid bunny" << endl;
 			fout.close();
 		}
@@ -252,7 +263,7 @@ namespace ZR
 		}
 		fclose(pFile);
 	}
-
 }
+	
 
 

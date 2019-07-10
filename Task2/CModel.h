@@ -19,6 +19,7 @@ namespace ZR
 		~CModel();
 
 		friend class CReader;
+		friend class CPainter;
 		void AddPoints(std::shared_ptr<CVertex> &vertex, const size_t &num);
 		void AddPoints(std::shared_ptr<CVertex> &vertex, const std::shared_ptr< CFacet> &facet);						//	添加顶点
 		void AddFacet(const std::shared_ptr< CFacet> &facet);							//	模型新增三角面片
@@ -30,8 +31,9 @@ namespace ZR
 		void SetOppositeEdge(const std::shared_ptr< CFacet> &facet,int &num);														//	为每一个三角片面设置每条边所共享的三角面片
 		void WriteToPlyFile(fs::path  fileName, int containType);					//将stl文件转换为ply文件
 		size_t GetTerritory(const int &pointNum, const int &n);									//	获取指定点的n阶领域
-		size_t GetTerritory(double x,double y,double z, int n);									//	获取指定点的n阶领域
+		size_t GetTerritory(double x,double y,double z, int n);									//	获取指定点的n阶领域		
 		size_t GetTerritory(const std::shared_ptr< CVertex> &vertex,const int &n);									//	获取指定点的n阶领域
+		void GetTerritory(const std::shared_ptr< CVertex> &vertex, const int &n, std::set<std::shared_ptr<CVertex>, CVertexCmp> &result);
 
 
 		size_t GetPoints(int containType);											// 获取模型的总的定点数

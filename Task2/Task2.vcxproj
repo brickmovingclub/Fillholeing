@@ -69,7 +69,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(ProjectDir)..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir)..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -118,6 +125,7 @@
     <ClCompile Include="CFacet.cpp" />
     <ClCompile Include="CModel.cpp" />
     <ClCompile Include="Common.cpp" />
+    <ClCompile Include="CPainter.cpp" />
     <ClCompile Include="CReader.cpp" />
     <ClCompile Include="CVector.cpp" />
     <ClCompile Include="CVertex.cpp" />
@@ -129,6 +137,7 @@
     <ClInclude Include="CFacet.h" />
     <ClInclude Include="CModel.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="CPainter.h" />
     <ClInclude Include="CReader.h" />
     <ClInclude Include="CVector.h" />
     <ClInclude Include="CVertex.h" />

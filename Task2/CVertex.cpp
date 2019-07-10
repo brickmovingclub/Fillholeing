@@ -37,9 +37,28 @@ namespace ZR
 				std::shared_ptr< CVertex> ptr = iter->GetVertex(i);
 				long num = ptr->GetNum();
 				setPoints.insert(iter->GetVertex(i));
+				//if (this->GetNum() == iter->GetVertex(i)->GetNum())
+			//	{
+				//	setPoints.insert(iter->GetVertex((i + 1) % 3));
+				//	break;
+				//}
 			}
 		}
 		//std::cout << " 当前set大小:" << setPoints.size() << std::endl;
+	}
+
+	void CVertex::GetNearPoints(std::set<std::shared_ptr<CVertex>, CVertexCmp> &nextVertexs, std::set<std::shared_ptr<CVertex>, CVertexCmp> &resultVertexs)
+	{
+		for (auto iter : _belongFacets)
+		{
+			for (int i = 0; i < iter->GetvertexNums(); ++i)
+			{
+				if (resultVertexs.insert(iter->GetVertex(i)).second)
+				{
+					nextVertexs.insert(iter->GetVertex(i));
+				}				
+			}
+		}
 	}
 
 	void CVertex::GetNextVertex(std::list < std::shared_ptr< CVertex>> &listback)

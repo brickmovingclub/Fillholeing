@@ -5,6 +5,8 @@
 #include "CVertexCmp.h"
 #include "CModel.h"
 #include "CReader.h"
+#include "CPainter.h"
+
 
 
 using namespace ZR;
@@ -74,9 +76,37 @@ void PlyToStl()
 	//std::cout << "节点数：" << model.GetPoints(containerType) << std::endl;
 	std::cout << "使用时间:" << Common::CalculateTimeDiff(startTime, endTime) << "毫秒" << std::endl;
 }
+
+
+void  OpenGl(int &argc,char **argv)
+{
+	CReader reader; CModel model;
+	unsigned long num = 0;
+	unsigned int j = 0;
+	fs::path fileName = L"D:/资源/资料/course7/bunny.ply";
+
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutInitWindowSize(500, 500);
+	glutInitWindowPosition(100, 100);
+	glutCreateWindow("simple");
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	reader.ReadAscallPly(fileName, model);
+	CPainter * painter = CPainter::Instance();
+	painter->SetModel(model);
+	std::cout << "请输入参数（point:stage）,example:(100,56)" << std::endl;
+	std::cin >> num >> j;
+	painter->SetPrams(num, j);
+	painter->Flush();
+	//
+	//glutMouseFunc(OnMouseClick);				//	注册鼠标事件
+	glutMainLoop();
+
+}
 int main(int argc, char **argv)
 {	
-	PlyToStl();
+	//PlyToStl();
+	OpenGl(argc,argv);
 	system("pause");
 	return 0;
 }

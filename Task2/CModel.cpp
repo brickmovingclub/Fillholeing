@@ -53,7 +53,8 @@ namespace ZR
 	}
 	void CModel::AddPoints(std::shared_ptr<CVertex> &vertex,const size_t &num)
 	{
-		_mapModelPoints.insert(std::make_pair(vertex, num));
+		_mapModelPoints.insert(std::make_pair(vertex, num)).second;
+		
 	}
 
 	void CModel::AddFacet(const std::shared_ptr< CFacet> &facet)
@@ -121,6 +122,43 @@ namespace ZR
 		}
 		return result;
 
+	}
+	void CModel::GetTerritory(const std::shared_ptr< CVertex> &vertex, const int &n, std::set<std::shared_ptr<CVertex>, CVertexCmp> &result)
+	{
+		
+		std::set<std::shared_ptr<CVertex>, CVertexCmp> tempSet;
+		std::set<std::shared_ptr<CVertex>, CVertexCmp> tempSetBack;
+
+		tempSet.insert(vertex);
+		tempSetBack.insert(vertex);
+		result.insert(vertex);
+		for (int i = 0; i < n; ++i)
+		{
+			if (i % 2 == 0)
+			{
+				for (auto iter : tempSet)
+				{
+					iter->GetNearPoints(tempSetBack, result);
+					//std::copy(tempSetBack.begin(), tempSetBack.end(), std::back_inserter(set));
+					//std::cout << "É¾³ýÖ¸¶¨ÔªËØ" << std::endl;
+				}
+				tempSet.clear();
+
+			}
+			else
+			{
+				for (auto iter : tempSetBack)
+				{
+					iter->GetNearPoints(tempSet, result);
+					//std::copy(tempSet.begin(), tempSet.end(), std::back_inserter(set));
+
+				}
+				tempSetBack.clear();
+			}
+		}
+		tempSet.clear();
+		tempSetBack.clear();
+		//std::cout << "result:" << result << std::endl;
 	}
 	size_t CModel::GetTerritory(const int &pointNum, const int  &n)
 	{

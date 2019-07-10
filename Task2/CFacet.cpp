@@ -113,14 +113,12 @@ namespace ZR
 		//return (((this->GetVertex(0)->GetNum() == num1) || (this->GetVertex(1)->GetNum() == num1) || (this->GetVertex(2)->GetNum() == num1)) && ((this->GetVertex(0)->GetNum() == num2) || (this->GetVertex(1)->GetNum() == num2) || (this->GetVertex(2)->GetNum() == num2))) ? true : false;
 	}
 
-	std::shared_ptr<CVertex> CFacet::GetVertex(const int &i)
+	std::shared_ptr<CVertex>  CFacet::GetVertex(const int &i)
 	{
 		//std::shared_ptr<CVertex> result(new CVertex);
-		std::shared_ptr<CVertex> result;
+		std::shared_ptr<CVertex> result = nullptr;
 		if (!_listFacetPoints.empty() && 0 <= i && i < _listFacetPoints.size())
-		{
-			//int num = _listFacetPoints.at(i)->GetNum();
-			//num = _listFacetPoints[i]->GetNum();
+		{			
 			result = _listFacetPoints.at(i);
 		}
 		return result;

@@ -12,8 +12,13 @@
 #include<unordered_set>
 #include <ctime>
 #include <limits>
+#include <mutex>
 #include <filesystem>
 
-
+//	opengl¿â
+#include <glut.h>
+#include <GLU.H>
+#include <GLAUX.H>
+#include <GL.H>
 namespace fs = std::experimental::filesystem;
 using namespace std;

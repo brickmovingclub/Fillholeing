@@ -17,6 +17,7 @@ public:
 	void AddNextVertex(const std::shared_ptr< CVertex> & vertex);
 
 	void GetNearPoints(std::set<std::shared_ptr<CVertex>, CVertexCmp> &setPoints);
+	void GetNearPoints(std::set<std::shared_ptr<CVertex>, CVertexCmp> &nextVertexs, std::set<std::shared_ptr<CVertex>, CVertexCmp> &resultVertexs);			//	新(nextVertexs::当前顶点的一阶领域节点，resultVertexs::所有的领域节点)
 
 	void GetNextVertex(std::list < std::shared_ptr< CVertex>> &listback);						//	获取当前顶点所指向的领域节点（不包括节点本身）
 

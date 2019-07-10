@@ -42,6 +42,9 @@
     <ClCompile Include="CVector.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CPainter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CVertex.h">
@@ -66,6 +69,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CVector.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPainter.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
