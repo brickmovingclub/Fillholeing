@@ -3,6 +3,7 @@
 namespace ZR
 {
 
+	class CVector;
 	class Common
 	{
 		Common();
@@ -12,5 +13,7 @@ namespace ZR
 		static int CalculateTimeDiff(const std::chrono::system_clock::time_point &startTime, const std::chrono::system_clock::time_point endTime); 
 
 		//static int CalculateTimeDiff(const time_t &startTime, const time_t &endTime);
+		static  bool VertexIsValid(CVertex &vertexA, CVertex &vertexB, CVertex &vertexP);
+
 	};
 }

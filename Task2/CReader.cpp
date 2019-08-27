@@ -1,6 +1,5 @@
 
 #include "stdafx.h"
-#include "Common.h""
 
 #include "CVertex.h"
 #include "CFacet.h"
@@ -9,6 +8,7 @@
 #include "CVector.h"
 
 #include "CReader.h"
+#include "Common.h""
 
 namespace ZR
 {

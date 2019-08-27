@@ -1,10 +1,10 @@
 
 #include "stdafx.h"
-#include "Common.h""
 
 #include "CVertex.h"
-#include "CFacet.h"
 
+#include "CFacet.h"
+#include "Common.h""
 
 
 

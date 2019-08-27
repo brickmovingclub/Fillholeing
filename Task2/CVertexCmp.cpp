@@ -3,6 +3,7 @@
 #include "CVertex.h"
 
 #include "CVertexCmp.h"
+#include "Common.h""
 
 namespace ZR
 {

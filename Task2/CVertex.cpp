@@ -4,6 +4,7 @@
 #include "CVertexCmp.h"
 #include "CFacet.h"
 #include "CVertex.h"
+#include "Common.h""
 
 
 namespace ZR

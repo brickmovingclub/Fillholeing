@@ -1,6 +1,5 @@
 
 #include "stdafx.h"
-#include "Common.h""
 #include "CVertexCmp.h"
 
 #include "CVertex.h"
@@ -8,6 +7,7 @@
 #include "CModel.h"
 
 #include "CPainter.h"
+#include "Common.h""
 
 namespace ZR
 {

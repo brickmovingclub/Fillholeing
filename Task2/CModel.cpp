@@ -1,6 +1,5 @@
 
 #include "stdafx.h"
-#include "Common.h""
 
 #include "CVertex.h"
 #include "CFacet.h"
@@ -8,6 +7,7 @@
 #include "CVector.h"
 
 #include "CModel.h"
+#include "Common.h""
 
 //static string head = ""
 

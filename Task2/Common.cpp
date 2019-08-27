@@ -1,6 +1,8 @@
 
 #include "stdafx.h"
 
+#include "CVertex.h"
+
 #include "Common.h""
 namespace ZR
 {
@@ -26,5 +28,12 @@ namespace ZR
 		return (double)(startTime - endTime) / CLOCKS_PER_SEC;
 	}
 	*/
+	bool Common::VertexIsValid(CVertex &vertexA, CVertex &vertexB, CVertex &vertexP)
+	{
+		bool result = false;
+		//新增点的合法性验证(点vertexA、vertexB、vertexP 是组成三角形的三个顶点，vertexP 是添加点)
+		return result;
+	}
 
 }
+
