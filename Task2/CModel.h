@@ -22,8 +22,10 @@ namespace ZR
 		friend class CPainter;
 		void AddPoints(std::shared_ptr<CVertex> &vertex, const size_t &num);
 		void AddPoints(std::shared_ptr<CVertex> &vertex, const std::shared_ptr< CFacet> &facet);						//	添加顶点
+		void AddPointsToVector(std::shared_ptr<CVertex> &vertex, const std::shared_ptr< CFacet> &facet);
 		void AddFacet(const std::shared_ptr< CFacet> &facet);							//	模型新增三角面片
 		void SerialVertex();															//	为map中的顶点编号，方便后续为将stl文件转ply文件
+		void SerialVector();														//	将vector中的点进行编号
 		void ReadBuffer(fs::path &fileDir, char **buffer);															//	读取stl文件，并未buffer分配内存
 		void Calculate(fs::path fileDir,int containType);							//	读取stl文件并处理
 		void Calculate2(fs::path fileDir, int containType);
@@ -47,6 +49,7 @@ namespace ZR
 		float CalculateSumArea();											//	计算模型的总面积
 		float CalculateVolume();									//	计算体积
 		void GetData(ofstream &fout);										//	读取模型所有的顶点和面片
+		void GetDataBinary(ofstream &fout);
 	private:
 		CVertexCmp compareMethod;
 		std::map< std::shared_ptr<CVertex>, long long, CVertexCmp> _mapModelPoints;	//	组成模型的所有顶点（没有重复点存在）

@@ -38,7 +38,7 @@ namespace ZR
 				if (pos != _mapModelPoints.end())
 				{
 					pos->first->AddFaces(facet);
-					facet->InsertVertex(pos->first);		//	当map容器中存在相同的点时，应当插入容器中的点，而不是新建立的vertex，（保持CFacet 和_mapModelPoints中的点的一致性）
+					facet->InsertVertex(pos->first);		//	当map容器中存在相同的点时，应当插入容器中已经存在的点，而不是新建立的vertex，（保持CFacet 和_mapModelPoints中的点的一致性）
 					vertex = nullptr;						//	后面不需要使用，则立即释放内存
 				}
 			}
@@ -49,6 +49,32 @@ namespace ZR
 			}
 		}
 			
+
+	}
+
+	void CModel::AddPointsToVector(std::shared_ptr<CVertex> &vertex, const std::shared_ptr< CFacet> &facet)
+	{
+		if (vertex != nullptr &&facet != nullptr)
+		{
+			auto iter = std::find(_vectorModelPoints.begin(), _vectorModelPoints.end(), vertex
+				//[&](const shared_ptr<CVertex> &temp) {return (temp->GetX() == vertex->GetX() && temp->GetY() == vertex->GetY() && temp->GetZ() == vertex->GetZ()) ? true : false;}
+			);
+			if (iter != _vectorModelPoints.end())
+			{
+				(*iter)->AddFaces(facet);
+				facet->InsertVertex(*iter);
+				vertex = nullptr;
+			}
+			else
+			{
+				vertex->SetNumber(_vectorModelPoints.size());
+				_vectorModelPoints.push_back(vertex);
+
+				facet->InsertVertex(vertex);
+				vertex->AddFaces(facet);
+			}
+		}
+		
 
 	}
 	void CModel::AddPoints(std::shared_ptr<CVertex> &vertex,const size_t &num)
@@ -70,6 +96,19 @@ namespace ZR
 		{
 			iter->first->SetNumber(value);
 			iter->second = value++;
+		}
+	}
+
+	void CModel::SerialVector()
+	{
+		CVertexCmp cmp;
+		sort(_vectorModelPoints.begin(), _vectorModelPoints.end(), cmp);
+		_vectorModelPoints.erase(unique(_vectorModelPoints.begin(), _vectorModelPoints.end(), [](std::shared_ptr<CVertex> ptr1, std::shared_ptr<CVertex> ptr2) {return (ptr1->GetX() == ptr2->GetX() && ptr1->GetY() == ptr2->GetY() && ptr1->GetZ() == ptr2->GetZ()); }), _vectorModelPoints.end());
+		int times = 0;
+		for (auto iter : _vectorModelPoints)
+		{
+			iter->SetNumber(times);
+			times++;
 		}
 	}
 
@@ -899,13 +938,119 @@ namespace ZR
 		listVertexs.clear();
 
 	}
+	void CModel::GetDataBinary(ofstream &fout)
+	{
+		//	10兆			
+		string strTemp = "";
+		double x, y, z;
+		if (_mapModelPoints.size() > 0)
+		{
+			for (auto iter : _mapModelPoints)
+			{
+				x = iter.first->GetX();
+				y = iter.first->GetY();
+				z = iter.first->GetZ();
+				fout <<(char *)&x  << " " << (char *)&y << " " << (char *)&z << endl;
+			}
+			for (auto iter : _listFacets)
+			{
+				int nums = iter->GetvertexNums();
+				fout << (char *)&nums << " ";
+				for (int i = 0; i < nums; ++i)
+				{
+					auto pos = _mapModelPoints.find(iter->GetVertex(i));
+					if (pos != _mapModelPoints.end())
+						fout << (char *)&pos->second << " ";
 
+				}
+				fout << endl;
+
+			}
+		}
+		else if (_vectorModelPoints.size() > 0)
+		{
+			for (auto iter : _vectorModelPoints)
+			{
+				//ss << iter->GetX() << " " << iter->GetY() << " " << iter->GetZ() << endl;
+				x = iter->GetX();
+				y = iter->GetY();
+				z = iter->GetZ();
+				fout << (char *)&x << " " << (char *)&y << " " << (char *)&z << endl;
+			}
+		
+			for (auto iter : _listFacets)
+			{
+				int nums = iter->GetvertexNums();
+				fout << (char *)&nums << " ";
+				for (int i = 0; i < nums; ++i)
+				{
+					unsigned long temp = iter->GetVertex(i)->GetNum();
+					fout << (char *)&temp << " ";
+				}
+				fout << endl;
+			}
+		}
+		else if (_setModelPoints.size() > 0)
+		{
+			for (auto iter : _setModelPoints)
+			{
+			//	ss << iter->GetX() << " " << iter->GetY() << " " << iter->GetZ() << endl;
+				x = iter->GetX();
+				y = iter->GetY();
+				z = iter->GetZ();
+				fout << (char *)&x << " " << (char *)&y << " " << (char *)&z << endl;
+			}
+			for (auto iter : _listFacets)
+			{
+				int nums = iter->GetvertexNums();
+				fout << (char *)&nums << " ";
+				for (int i = 0; i < nums; ++i)
+				{
+					unsigned long temp = iter->GetVertex(i)->GetNum();
+					fout << (char *)&temp << " ";
+				}
+				fout << endl;
+			}
+		
+		}
+		else
+		{
+			return;
+		}
+		
+	
+	
+
+
+	}
 	void CModel::GetData(ofstream &fout)
 	{
-		for (auto iter : _mapModelPoints)
+		if (_mapModelPoints.size() > 0)
 		{
-			fout << iter.first->GetX() << " " << iter.first->GetY() << " " << iter.first->GetZ() << endl;
+			for (auto iter : _mapModelPoints)
+			{
+				fout << iter.first->GetX() << " " << iter.first->GetY() << " " << iter.first->GetZ() << endl;
+			}
 		}
+		else if (_vectorModelPoints.size() > 0)
+		{
+			for (auto iter : _vectorModelPoints)
+			{
+				fout << iter->GetX() << " " << iter->GetY() << " " << iter->GetZ() << endl;
+			}
+		}
+		else if (_setModelPoints.size() > 0)
+		{
+			for (auto iter : _setModelPoints)
+			{
+				fout << iter->GetX() << " " << iter->GetY() << " " << iter->GetZ() << endl;
+			}
+		}
+		else
+		{
+			return;
+		}
+		
 
 		for (auto iter : _listFacets)
 		{

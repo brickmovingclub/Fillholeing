@@ -163,6 +163,53 @@ namespace ZR
 		model.SerialVertex();
 	}
 
+	void CReader::ReadAscallStlToVetor(const fs::path &fileDir, CModel &model)
+	{
+		char *buffer = nullptr;				//	临时存储文件内容
+		int i;
+		long double x, y, z;				//	组成每一个三角面片的三个顶点（包含先后顺序）
+		unsigned long facetNum = 0;			//	模型的三角面片序号，不断递增
+		string name, useless;				//	无效数据（文件的头部以及一些其它信息）
+
+		//	读取文件内容
+		ReadBuffer(fileDir, &buffer);
+		stringstream ss(buffer);
+		ss.precision(std::numeric_limits<long double>::digits10);		//	设置读取double类型数据的进度，stringstream默认精度为6
+
+		// 去掉首行无用数据
+		getline(ss, name);
+		//ss.get();
+		do {
+			ss >> useless;
+			if (useless != "facet")
+				break;
+			getline(ss, useless);
+			getline(ss, useless);
+
+			std::shared_ptr<CFacet> oneFace(new CFacet);
+			oneFace->SetNumber(facetNum++);
+			for (i = 0; i < 3; i++)
+			{
+				//	添加顶点
+				ss >> useless >> x >> y >> z;
+				std::shared_ptr<CVertex> vertex(new CVertex(x, y, z, 0));
+				model.AddPointsToVector(vertex, oneFace);
+			}
+			//	添加三角面片
+			model.AddFacet(oneFace);
+
+			getline(ss, useless);
+			getline(ss, useless);
+			getline(ss, useless);
+		} while (1);
+
+		free(buffer);
+
+		//	对所有顶点进行编号
+	//	model.SerialVector();
+
+	}
+
 	void CReader::ReadBinaryStl(const fs::path &fileDir, CModel &model)
 	{
 
@@ -194,6 +241,37 @@ namespace ZR
 			model.GetData(fout);
 			fout.close();
 		}
+	}
+
+	void CReader::TransformToBinary(CModel &model, const fs::path &plyFileName)
+	{
+		long vertexNum, facetNum;
+		size_t fileSize = 0;
+		//	输出ply文件，不存在则创建
+		ofstream fout(plyFileName.c_str(), ios::out); 
+		fout.precision(std::numeric_limits<double>::digits10);
+
+		//	获取面片数和顶点数
+		vertexNum = model.GetNumOfVertes();
+		facetNum = model.GetnumberOfFacets();
+		if (fout.is_open())
+		{
+			//	写头部
+			fout << "ply" << endl;
+			fout << "format ascii 1.0" << endl;
+			fout << "comment created by platoply" << endl;
+			fout << "element vertex " << vertexNum << endl;
+			fout << "property float32 x" << endl;
+			fout << "property float32 y" << endl;
+			fout << "property float32 z" << endl;
+			fout << "element face " << facetNum << endl;
+			fout << "property list uint8 int32 vertex_indices\nend_header" << endl;
+
+			model.GetDataBinary(fout);
+			fout.close();
+
+		}
+		
 	}
 	void CReader::TransformToStl(CModel &model, const fs::path &stlFileName)
 	{

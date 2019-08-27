@@ -8,7 +8,7 @@ namespace ZR
 	class CVertex
 {
 public:
-	explicit CVertex(long double x, long double y, long double z, size_t number);
+	explicit CVertex(double x, double y, double z, size_t number);
 	CVertex(const CVertex &vertex);
 	CVertex();
 	~CVertex();
@@ -26,13 +26,13 @@ public:
 	 
 	int GetFacetNum()const;
 
-	long double GetX() const {
+	double GetX() const {
 		return _x;
 	}
-	long double GetY() const {
+	double GetY() const {
 		return _y;
 	}
-	long double GetZ() const {
+	double GetZ() const {
 		return _z;
 	}
 	size_t GetNum() const {
@@ -74,9 +74,9 @@ public:
 		return (vertex.GetX() == this->GetX() && vertex.GetY() == this->GetY() && vertex.GetZ() == this->GetZ());
 	}
 private:
-	long double _x;						//	顶点的x坐标
-	long double _y;						//	顶点的y坐标
-	long double _z;						//	顶点的z坐标
+	double _x;						//	顶点的x坐标
+	double _y;						//	顶点的y坐标
+	double _z;						//	顶点的z坐标
 
 	std::list<std::shared_ptr< CFacet>> _belongFacets;			//点所属的面片
 	size_t _serialNumber;										//	顶点序列号

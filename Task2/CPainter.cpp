@@ -104,6 +104,7 @@ namespace ZR
 			glVertex3f(iter->GetVertex(2)->GetX(), iter->GetVertex(2)->GetY(), iter->GetVertex(2)->GetZ());
 			glEnd();
 
+			
 			glBegin(GL_LINES);
 			glColor3f(0.8, 0.8f, 0.8f);
 			glVertex3f(iter->GetVertex(0)->GetX(), iter->GetVertex(0)->GetY(), iter->GetVertex(0)->GetZ());
@@ -114,7 +115,7 @@ namespace ZR
 			glVertex3f(iter->GetVertex(0)->GetX(), iter->GetVertex(0)->GetY(), iter->GetVertex(0)->GetZ());
 
 			glEnd();
-
+			
 		}
 	
 		Colorful();

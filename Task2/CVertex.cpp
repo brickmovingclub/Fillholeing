@@ -8,7 +8,7 @@
 
 namespace ZR
 {
-	CVertex::CVertex(long double x, long double y, long double z, size_t number):_x(x),_y(y),_z(z), _serialNumber(number)
+	CVertex::CVertex(double x, double y, double z, size_t number):_x(x),_y(y),_z(z), _serialNumber(number)
 	{
 	}
 	CVertex::CVertex():_x(0), _y(0), _z(0), _serialNumber(0)

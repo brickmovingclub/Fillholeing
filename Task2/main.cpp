@@ -103,10 +103,29 @@ void  OpenGl(int &argc,char **argv)
 	glutMainLoop();
 
 }
+
+void TestStlToPly()
+{
+
+	//	 vector;
+	CReader reader; CModel model;
+	fs::path fileName = L"D:/资料/course2/bunny.stl";
+	fs::path fileNameOut = L"D:/测试输出/testOut.ply";
+	std::chrono::system_clock::time_point startTime = std::chrono::system_clock::now();
+
+	reader.ReadAscallStl(fileName, model);
+	reader.TransformToBinary(model, fileNameOut);
+	std::chrono::system_clock::time_point endTime = std::chrono::system_clock::now();
+	std::cout << "vector存储时使用时间:" << Common::CalculateTimeDiff(startTime, endTime) << "毫秒" << std::endl;
+
+
+
+}
 int main(int argc, char **argv)
 {	
 	//PlyToStl();
-	OpenGl(argc,argv);
+	//OpenGl(argc,argv);
+	TestStlToPly();
 	system("pause");
 	return 0;
 }
