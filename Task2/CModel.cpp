@@ -871,6 +871,7 @@ namespace ZR
 	}
 	void CModel::GetHoles2(std::vector<std::list<std::shared_ptr< CVertex>>> & result)
 	{
+		//	可以排除非独立性孔洞
 		std::list < std::shared_ptr< CVertex>> listTemp;			//	临时存储查找点的领域节点
 		std::list < std::shared_ptr< CVertex>> listTempback;
 		std::list<std::shared_ptr< CVertex>> listVertexs;			//	所有的边界节点
@@ -885,15 +886,37 @@ namespace ZR
 		}
 		std::shared_ptr< CVertex> vStart, vEnd = nullptr,temp = nullptr;
 		
-		std::cout << "边界点个数：" << listVertexs.size() << std::endl;
+		//std::cout << "边界点个数：" << listVertexs.size() << std::endl;
 
 		//	对孔洞进行循环遍历，形成环则判断为一个孔洞
 		while (listVertexs.size())
 		{
-			std::list<std::shared_ptr< CVertex>> hole;			//	孔洞
-			(*listVertexs.begin())->GetNextVertex(listTemp); 
+			//	以非共顶点作为初始点(当前点的领域点在边界点集中只能找到两个)
+			std::list<std::shared_ptr< CVertex>> hole1;			//	孔洞
+			std::list<std::shared_ptr< CVertex>> hole2;
+		/*	for (std::list<std::shared_ptr< CVertex>>::iterator iter = listVertexs.begin(); iter != listVertexs.end();iter++)
+			{
+				(*iter)->GetNextVertex(listTemp);
+				int i = 0;
+				for (auto iter2 : listTemp)
+				{
+					auto pos = std::find(listVertexs.begin(), listVertexs.end(), iter2);
+					if (pos != listTemp.end())
+						i++;
+				}
+				if (i == 2)
+				{
+					(*iter)->GetNextVertex(listTempback);
+					hole1.push_front(*iter);
+					listVertexs.erase(iter);
+					break;
+				}
+			}*/
+
+			//	查找当前点的 领域点集
+			(*listVertexs.begin())->GetNextVertex(listTemp);
 			(*listVertexs.begin())->GetNextVertex(listTempback);
-			hole.push_front(*listVertexs.begin());
+			hole1.push_front(*listVertexs.begin());
 			listVertexs.erase(listVertexs.begin());
 			//std::cout << "start:" << vStart->GetNum() << std::endl;
 
@@ -906,7 +929,7 @@ namespace ZR
 					{
 						flag1 = true;
 						vStart = iter; 
-						hole.push_front(vStart);
+						hole1.push_back(vStart);
 						vStart->GetNextVertex(listTempback);
 						listVertexs.erase(pos);
 						break;
@@ -919,7 +942,7 @@ namespace ZR
 					{
 						flag2 = true;
 						vEnd = *pos;
-						hole.push_front(vEnd);
+						hole2.push_front(vEnd);
 
 						vEnd->GetNextVertex(listTemp);
 						listVertexs.erase(pos);
@@ -931,8 +954,16 @@ namespace ZR
 
 			} while (vStart != vEnd );
 			//std::cout << "组成孔洞的点的个数：" << hole.size() << std::endl;
-			result.push_back(hole);
-			hole.clear();
+
+			//拼接孔洞的点，使其具有顺序
+			for (auto iter : hole2)
+			{
+				hole1.push_back(iter);
+			}
+			result.push_back(hole1);
+			hole1.clear();
+			hole2.clear();
+
 
 		}
 		listVertexs.clear();

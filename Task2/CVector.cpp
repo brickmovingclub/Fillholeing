@@ -24,6 +24,12 @@ namespace ZR
 
 	}
 
+	CVector::CVector(std::shared_ptr<CVertex> &vertexA, std::shared_ptr<CVertex> &vertexB)
+	{
+		_x = vertexB->GetX() - vertexA->GetX();
+		_y = vertexB->GetY() - vertexA->GetY();
+		_z = vertexB->GetZ() - vertexA->GetZ();
+	}
 
 	CVector::~CVector()
 	{
@@ -62,6 +68,21 @@ namespace ZR
 		this->_x = vector._x;
 		this->_y = vector._y;
 		this->_z = vector._z;
+	}
+
+	// 两向量点乘
+	double ZR::CVector::DotProduct(const CVector &a, const CVector &b)
+	{
+		// TODO: 在此处添加实现代码.
+		return a._x * b._x + a._y * b._y + a._z * b._z;
+	}
+
+
+	//向量的模
+	double ZR::CVector::NormOfVector(const CVector &a)
+	{
+		// TODO: 在此处添加实现代码.
+		return a._x * a._x + a._y * a._y + a._z * a._z;
 	}
 }
 

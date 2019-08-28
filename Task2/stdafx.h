@@ -22,3 +22,12 @@
 #include <GL.H>
 namespace fs = std::experimental::filesystem;
 using namespace std;
+
+#define PI 3.1415926
+
+enum AddPointType
+{
+	LESS90,
+	LESS180ANDBIGGER90,
+	BIGGER180
+};
