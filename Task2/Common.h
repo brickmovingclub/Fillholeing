@@ -18,8 +18,9 @@ namespace ZR
 		static void CalTriangleCricumcenter(std::shared_ptr< CVertex> v1, std::shared_ptr< CVertex> v2, std::shared_ptr< CVertex> v3, std::shared_ptr< CVertex> center);
 
 		//	计算两空间向量的夹角
-		static int Calangel(std::shared_ptr< CVertex > ptrA, std::shared_ptr< CVertex > ptrB, std::shared_ptr< CVertex > ptr);
+		static std::shared_ptr< CFacet> Calangel( std::list < std::shared_ptr< CVertex>> &holes);
 		//	检测孔洞修复时添加点的合法性
 		//static bool CheckValidity(const Point & addPoint, std::vector<CLine> &borderLines);
 	};
 }
+

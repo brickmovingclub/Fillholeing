@@ -23,6 +23,17 @@ namespace ZR
 		std::shared_ptr<CVertex> GetVertex(const int &i);
 		void SetNumber(const unsigned long &num);							//	设置面片序号
 		unsigned long GetFacetNum()const;									//	获取面片序号
+		int GetVertexNum(std::shared_ptr<CVertex> vertex)const
+		{
+			int i = 0;
+			for (auto iter: _listFacetPoints)
+			{
+				if (iter == vertex)
+					return i;
+				i++;
+			}
+			return -1;
+		}
 
 
 	private:

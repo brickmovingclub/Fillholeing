@@ -91,17 +91,17 @@ namespace ZR
 
 		if (v1 && v2)
 		{
-			numback = 0;
+			numback = 2;
 			return true;
 		}
 		else if (v1 && v3)
 		{
-			numback = 2;
+			numback = 1;
 			return true;
 		}
 		else if (v2 && v3)
 		{
-			numback = 2;
+			numback = 0;
 			return true;
 		}
 		else
